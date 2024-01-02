@@ -1,16 +1,8 @@
-import { Image, Pressable, StyleSheet, Text, View, useWindowDimensions } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { TMeal } from "../types";
 import { Feather } from '@expo/vector-icons';
-//  categoryIds: Array<string>;
-//     title: string;
-//     imageUrl: string;
-//     ingredients: Array<string>;
-//     steps: Array<string>;
-//     duration: number;
-//     complexity: string;
-//     affordability: string;
-//     isGlutenFree: boolean;
+
 const MealItem = ({ item }: { item: TMeal }) => {
   return (
     <View style={[styles.container]}>
@@ -58,6 +50,7 @@ const styles = StyleSheet.create({
   pressableStyle:{
     flex:1,
     borderRadius:5,
+    gap:10
   },
   imageStyleContainer:{
     width:'100%',

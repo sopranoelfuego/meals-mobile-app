@@ -1,22 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import React, {  useLayoutEffect, useState } from "react";
+import { FlatList,  StyleSheet } from "react-native";
 import { meals } from "../utils/dummy-data";
 import { TMeal } from "../types";
 import MealItem from "../components/MealItem";
 
-function MealByCategoryScreen({ route }: { route: any }) {
+function MealByCategoryScreen({ route,navigation }: { route: any,navigation:any }) {
   const [listOfMeals, setListOfMeals] = useState<Array<TMeal>>([]);
-  useEffect(() => {
-    // categories,meals
+  useLayoutEffect(() => {
     const init = () => {
       const listOfMeals = meals.filter((m: TMeal) =>
         m.categoryIds.includes(route?.params?.categorId)
       );
       setListOfMeals(listOfMeals);
+       navigation.setOptions({
+      title:route?.params?.title
+    })
     };
     if (route?.params?.categorId) init();
   }, [route?.params?.categorId]);
 
+ 
   function renderSingleMeal({ item }: { item: TMeal }) {
     return <MealItem item={item} />;
   }
