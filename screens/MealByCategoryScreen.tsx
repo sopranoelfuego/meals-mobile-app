@@ -21,7 +21,10 @@ function MealByCategoryScreen({ route,navigation }: { route: any,navigation:any 
 
  
   function renderSingleMeal({ item }: { item: TMeal }) {
-    return <MealItem item={item} />;
+    const handleOnPress=()=>{
+      navigation.navigate('SingleMealDetails',{mealId:item?.id})
+    }
+    return <MealItem item={item} onPress={handleOnPress} />;
   }
 
   return (

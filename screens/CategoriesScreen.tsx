@@ -5,7 +5,10 @@ import SingleCategory from "../components/SingleCategory";
 function CategoriesScreen({ navigation }: any) {
   function renderSingleCategory(itemData: any) {
     const handleRoute = () => {
-      navigation.navigate("Meals", { categorId: itemData?.item?.id,title:itemData?.item?.title });
+      navigation.navigate("Meals", {
+        categorId: itemData?.item?.id,
+        title: itemData?.item?.title,
+      });
     };
     return (
       <SingleCategory

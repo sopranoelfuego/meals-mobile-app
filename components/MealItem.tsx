@@ -3,10 +3,14 @@ import React from "react";
 import { TMeal } from "../types";
 import { Feather } from '@expo/vector-icons';
 
-const MealItem = ({ item }: { item: TMeal }) => {
+type IProps={
+  item:TMeal,
+  onPress:()=>void
+}
+const MealItem = ({ item ,onPress}:IProps) => {
   return (
     <View style={[styles.container]}>
-      <Pressable android_ripple={{color:'#ccc'}} style={({pressed})=>pressed?[styles.pressableStyle,{width:'100%'},{opacity:0.7}] :[styles.pressableStyle,{width:'100%'}]}>
+      <Pressable android_ripple={{color:'#ccc'}} style={({pressed})=>pressed?[styles.pressableStyle,{width:'100%'},{opacity:0.7}] :[styles.pressableStyle,{width:'100%'}]} onPress={onPress}>
         <View style={styles.imageStyleContainer}>
         <Image source={{ uri: item.imageUrl }} style={styles.imageStyle} resizeMode="cover" />
         </View>
@@ -19,7 +23,7 @@ const MealItem = ({ item }: { item: TMeal }) => {
           <Text style={{fontSize:14,opacity:0.5,fontWeight:'600',textAlign:"right"}}>{item.complexity}</Text>
           <Text style={{fontSize:14,opacity:0.5,fontWeight:'600',textAlign:"right"}}>{item.affordability}</Text>
           </View>
-          <Pressable style={({pressed})=>pressed?[{backgroundColor:"#3299a8",padding:5,borderRadius:5,opacity:0.6}]:[{backgroundColor:"#3299a8",padding:5,borderRadius:5}]}>
+          <Pressable style={({pressed})=>pressed?[{backgroundColor:"#3299a8",padding:5,borderRadius:5,opacity:0.6}]:[{backgroundColor:"#3299a8",padding:5,borderRadius:5}]} onPress={onPress}>
             <View style={{width:'100%',flexDirection:'row',justifyContent:'center',alignItems:'center',gap:5}}>
               <Feather name="info" size={24} color='white'/>
               <Text style={{color:"white",fontWeight:'600'}}>Further information</Text>
