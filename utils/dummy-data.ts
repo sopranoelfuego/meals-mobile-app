@@ -53,7 +53,6 @@ export const categories:Array<TCategory> = [
    color:'#47fced'
 }
 ];
-
 export const meals:Array<TMeal> = [
   {
     id:'m1',
