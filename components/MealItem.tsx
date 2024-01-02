@@ -42,14 +42,12 @@ const MealItem = ({ item }: { item: TMeal }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection:'row',
     justifyContent:"center",
     alignItems:"center",
     backgroundColor:'white',
-    width:"100%",
     padding:10,
-    marginRight:5,
-
-    marginVertical:10,
+    margin:10,
     borderRadius:5,
     elevation:4,
     shadowColor:'black',
@@ -59,9 +57,7 @@ const styles = StyleSheet.create({
   },
   pressableStyle:{
     flex:1,
-    width:'100%',
     borderRadius:5,
-    gap:10
   },
   imageStyleContainer:{
     width:'100%',
