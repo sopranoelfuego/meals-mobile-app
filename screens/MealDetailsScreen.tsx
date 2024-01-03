@@ -1,29 +1,53 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, Text, View, StyleSheet, Image } from "react-native";
+import {
+  ScrollView,
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  useWindowDimensions,
+  Pressable,
+} from "react-native";
 import { TMeal } from "../types";
 import { meals } from "../utils/dummy-data";
-
-const MealDetailsScreen = ({ route }: { route: any }) => {
+import { Feather } from "@expo/vector-icons";
+const SaveButton = () => {
+  return (
+    <Pressable
+      android_ripple={{ color: "#ccc" }}
+      style={(pressed) =>
+        pressed
+          ? [styles.saveHeaderButtonStyle, { opacity: 0.7 }]
+          : [styles.saveHeaderButtonStyle]
+      }
+      onPress={() => console.log("pressed here")}
+    >
+      <Feather name="save" size={18} color="white" />
+      <Text style={{ fontSize: 18, color: "white", fontWeight: "600" }}>
+        save
+      </Text>
+    </Pressable>
+  );
+};
+const MealDetailsScreen = ({
+  route,
+  navigation,
+}: {
+  route: any;
+  navigation: any;
+}) => {
   const [mealDetailed, setMealDetailed] = useState<TMeal>();
+  const { width } = useWindowDimensions();
   useEffect(() => {
     const init = () => {
       const exactMeal = meals.find((m) => m?.id === route?.params?.mealId);
       setMealDetailed(exactMeal);
+      navigation.setOptions({
+        headerRight: () => <SaveButton />,
+      });
     };
     if (route) init();
   }, [route]);
-  /**
-   * ingredients: Array<string>;
-    steps: Array<string>;
-    isGlutenFree: boolean;
-   * duration: number;
-    complexity: string;
-    affordability: string;
-    isGlutenFree: boolean;
-    isVegan: boolean;
-    isVegetarian: boolean;
-    isLactoseFree: boolean;
-   * */
 
   return (
     <ScrollView>
@@ -78,7 +102,7 @@ const MealDetailsScreen = ({ route }: { route: any }) => {
                 {mealDetailed?.affordability}
               </Text>
             </View>
-
+            {/* =================== ENGREDIENTS ==================================== */}
             <View style={styles.singleInfo}>
               <Text style={{ fontWeight: "700" }}>Engredients</Text>
               <View style={{ alignItems: "flex-start", gap: 5 }}>
@@ -97,9 +121,11 @@ const MealDetailsScreen = ({ route }: { route: any }) => {
                 ))}
               </View>
             </View>
+            {/* =================== STEPS ==================================== */}
+
             <View style={{ gap: 5 }}>
-              <Text style={{ fontWeight: "700" }}>Steps</Text>
-              <View style={{ alignItems: "flex-start", gap: 5 }}>
+              <Text style={{ fontWeight: "700" }}>Steps:</Text>
+              <View style={{ alignItems: "flex-start", gap: 10 }}>
                 {mealDetailed?.steps?.map((m, index) => (
                   <Text
                     key={index}
@@ -107,22 +133,67 @@ const MealDetailsScreen = ({ route }: { route: any }) => {
                       fontSize: 12,
                       opacity: 0.5,
                       fontWeight: "600",
-                      textAlign: "right",
+                      textAlign: "justify",
+                      width: width - 40,
                     }}
-                    numberOfLines={2}
+                    numberOfLines={3}
                   >
                     {`${index + 1}.` + m}
                   </Text>
                 ))}
               </View>
             </View>
-          </View>
-          {/* <Pressable style={({pressed})=>pressed?[{backgroundColor:"#3299a8",padding:5,borderRadius:5,opacity:0.6}]:[{backgroundColor:"#3299a8",padding:5,borderRadius:5}]} onPress={onPress}>
-            <View style={{width:'100%',flexDirection:'row',justifyContent:'center',alignItems:'center',gap:5}}>
-              <Feather name="info" size={24} color='white'/>
-              <Text style={{color:"white",fontWeight:'600'}}>Further information</Text>
+            {/* =================== BOLEANS EX:IS FREE ==================================== */}
+
+            <View style={styles.booleanContainerStyle}>
+              <View style={styles.booleanSingleStyle}>
+                <Text style={{ fontWeight: "700" }}>Is Gluten Free</Text>
+                <View>
+                  <Feather
+                    name={
+                      mealDetailed?.isGlutenFree ? "check-circle" : "x-circle"
+                    }
+                    size={16}
+                    color={mealDetailed?.isGlutenFree ? "green" : "red"}
+                  />
+                </View>
+              </View>
+              <View style={styles.booleanSingleStyle}>
+                <Text style={{ fontWeight: "700" }}>Vegan</Text>
+                <View>
+                  <Feather
+                    name={mealDetailed?.isVegan ? "check-circle" : "x-circle"}
+                    size={16}
+                    color={mealDetailed?.isVegan ? "green" : "red"}
+                  />
+                </View>
+              </View>
+              <View style={styles.booleanSingleStyle}>
+                <Text style={{ fontWeight: "700" }}>Vegetarian</Text>
+                <View>
+                  <Feather
+                    name={
+                      mealDetailed?.isVegetarian ? "check-circle" : "x-circle"
+                    }
+                    size={16}
+                    color={mealDetailed?.isVegetarian ? "green" : "red"}
+                  />
+                </View>
+              </View>
+              <View style={styles.booleanSingleStyle}>
+                <Text style={{ fontWeight: "700" }}>Is Lacose Free</Text>
+                <View>
+                  <Feather
+                    name={
+                      mealDetailed?.isLactoseFree ? "check-circle" : "x-circle"
+                    }
+                    size={16}
+                    color={mealDetailed?.isLactoseFree ? "green" : "red"}
+                  />
+                </View>
+              </View>
             </View>
-          </Pressable> */}
+          </View>
         </View>
       </View>
     </ScrollView>
@@ -156,8 +227,9 @@ const styles = StyleSheet.create({
     flex: 0.7,
   },
   infoContainer: {
+    paddingTop: 10,
     flex: 0.3,
-    gap: 5,
+    gap: 20,
   },
   singleInfo: {
     width: "100%",
@@ -167,6 +239,26 @@ const styles = StyleSheet.create({
   styleTitle: {
     fontSize: 20,
     fontWeight: "600",
+  },
+  booleanContainerStyle: {
+    maxWidth: 300,
+  },
+  booleanSingleStyle: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginVertical: 10,
+  },
+  saveHeaderButtonStyle: {
+    backgroundColor: "#3299a8",
+    paddingHorizontal: 7,
+    paddingVertical: 3,
+    borderRadius: 5,
+    marginHorizontal: 8,
+    opacity: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
   },
 });
 export default MealDetailsScreen;
